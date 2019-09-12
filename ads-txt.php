@@ -35,5 +35,16 @@ function tenup_display_ads_txt() {
 			die();
 		}
 	}
+	if ( '/app-ads.txt' === $request ) {
+		$post_id = get_option( 'app-adstxt_post' );
+
+		// Will fall through if no option found, likely to a 404.
+		if ( ! empty( $post_id ) ) {
+			$post = get_post( $post_id );
+			header( 'Content-Type: text/plain' );
+			echo esc_html( $post->post_content );
+			die();
+		}
+	}
 }
 add_action( 'init', 'tenup_display_ads_txt' );

@@ -17,6 +17,7 @@ function save() {
 	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
 
 	$post_id = $_post['post_id'];
+	$post_id_option_name = $_post['option_name'];
 	$ays     = isset( $_post['adstxt_ays'] ) ? $_post['adstxt_ays'] : null;
 
 	// Different browsers use different line endings.
@@ -52,7 +53,7 @@ function save() {
 		$post_id = wp_insert_post( $postarr );
 
 		if ( $post_id ) {
-			update_option( 'adstxt_post', $post_id );
+			update_option( $post_id_option_name, $post_id );
 			$response['saved'] = true;
 		}
 	}
