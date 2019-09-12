@@ -65,7 +65,16 @@ add_action( 'admin_menu', __NAMESPACE__ . '\admin_menu' );
  * @return void
  */
 function settings_screen() {
-	$post_id = get_option( 'adstxt_post' );
+
+	$current_tab = ( ! empty( $_GET['tab'] ) ) ? esc_attr( $_GET['tab'] ) : 'ads-txt';
+
+	if ( 'app-ads-txt' === $current_tab ) {
+		$post_id_option_name = 'app-adstxt_post';
+	} else {
+		$post_id_option_name = 'adstxt_post';
+	}
+
+	$post_id = get_option( $post_id_option_name );
 	$post    = false;
 	$content = false;
 	$errors  = [];
@@ -112,8 +121,11 @@ function settings_screen() {
 
 	<h2><?php echo esc_html__( 'Manage Ads.txt', 'ads-txt' ); ?></h2>
 
+	<?php echo wp_kses_post( settings_tabs( $current_tab ) ); ?>
+
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="adstxt-settings-form">
 		<input type="hidden" name="post_id" value="<?php echo ( is_a( $post, 'WP_Post' ) ? esc_attr( $post->ID ) : '' ); ?>" />
+		<input type="hidden" name="option_name" value="<?php echo esc_attr( $post_id_option_name ); ?>" />
 		<input type="hidden" name="action" value="adstxt-save" />
 		<?php wp_nonce_field( 'adstxt_save' ); ?>
 
@@ -229,4 +241,22 @@ function get_error_messages() {
 	);
 
 	return $messages;
+}
+
+function settings_tabs( $current = 'ads-txt' ) {
+	$tabs = array(
+		'ads-txt'   => __( 'ads.txt' ), 
+		'app-ads-txt'  => __( 'app-ads.txt' ),
+	);
+
+	$html = '<div class="nav-tab-wrapper" style="margin-bottom:30px;">';
+
+	foreach( $tabs as $tab => $name ){
+		$class = ( $tab === $current ) ? 'nav-tab-active' : '';
+		$html .= '<a class="nav-tab ' . $class . '" href="?page=adstxt-settings&tab=' . $tab . '">' . $name . '</a>';
+	}
+
+	$html .= '</div>';
+
+	return $html;
 }
