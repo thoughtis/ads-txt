@@ -66,7 +66,8 @@ add_action( 'admin_menu', __NAMESPACE__ . '\admin_menu' );
  */
 function settings_screen() {
 
-	$current_tab = ( ! empty( $_GET['tab'] ) ) ? esc_attr( $_GET['tab'] ) : 'ads-txt';
+	$tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : '';
+	$current_tab = ( ! empty( $tab ) ) ? esc_attr( $tab ) : 'ads-txt';
 
 	if ( 'app-ads-txt' === $current_tab ) {
 		$post_id_option_name = 'app-adstxt_post';
@@ -215,10 +216,12 @@ function display_formatted_error( $error ) {
 	$message = sprintf( esc_html( $messages[ $error['type'] ] ), '<code>' . esc_html( $error['value'] ) . '</code>' );
 
 	printf(
-		/* translators: Error message output. 1: Line number, 2: Error message */
-		__( 'Line %1$s: %2$s', 'ads-txt' ),
-		esc_html( $error['line'] ),
-		wp_kses_post( $message )
+		esc_html(
+			/* translators: Error message output. 1: Line number, 2: Error message */
+			__( 'Line %1$s: %2$s', 'ads-txt' ),
+			$error['line'],
+			wp_kses_post( $message )
+		)
 	);
 }
 
