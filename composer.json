@@ -1,0 +1,20 @@
+{
+    "name": "thoughtis/ads-txt",
+    "description": "Create, manage, and validate your Ads.txt from within WordPress.",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "version": "1.2",
+    "homepage": "https://github.com/thoughtis/ads-txt",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Thought.is",
+            "homepage": "https://thought.is/"
+        },
+        {
+            "name": "10up",
+            "homepage": "http://10up.com"
+        }
+    ],
+    "require": {}
+}

@@ -16,8 +16,9 @@ function save() {
 	$_post      = stripslashes_deep( $_POST );
 	$doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
 
-	$post_id = $_post['post_id'];
-	$ays     = isset( $_post['adstxt_ays'] ) ? $_post['adstxt_ays'] : null;
+	$post_id     = $_post['post_id'];
+	$ays         = isset( $_post['adstxt_ays'] ) ? $_post['adstxt_ays'] : null;
+	$option_name = $_post['option_name'];
 
 	// Different browsers use different line endings.
 	$lines     = preg_split( '/\r\n|\r|\n/', $_post['adstxt'] );
@@ -52,7 +53,7 @@ function save() {
 		$post_id = wp_insert_post( $postarr );
 
 		if ( $post_id ) {
-			update_option( 'adstxt_post', $post_id );
+			update_option( $option_name, $post_id );
 			$response['saved'] = true;
 		}
 	}
